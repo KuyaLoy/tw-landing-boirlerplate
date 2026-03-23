@@ -1,0 +1,8 @@
+/* ========== TAILWIND CSS ========== */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========== IMPORTS ========== */
+/* Note: fonts.css is inlined in HTML header for critical rendering, not imported here */
+@import "./custom.css";

@@ -1,0 +1,73 @@
+/* ==========================================================================
+   Responsive Media Query Breakpoints (Mobile-First, Clean, and Professional)
+   ========================================================================== */
+
+/* Base styles: Mobile first (0 - 575px) */
+
+/* Small devices (phones, 576px and up) */
+@media (min-width: 576px) {
+  /* Styles for ≥576px (small phones and up) */
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  /* Styles for ≥768px (tablets and up) */
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  /* Styles for ≥992px (desktops and up) */
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  /* Styles for ≥1200px (large desktops and up) */
+}
+
+/* Super large screens (1440px and up) */
+@media (min-width: 1440px) {
+  /* Styles for ≥1440px (very large screens) */
+}
+
+/* ==========================================================================
+   Optional: Max-width breakpoints for targeting below certain sizes
+   ========================================================================== */
+
+/* Below 1200px */
+@media (max-width: 1199.98px) {
+  /* Styles for <1200px */
+}
+
+/* Below 992px */
+@media (max-width: 991.98px) {
+  /* Styles for <992px */
+}
+
+/* Below 768px */
+@media (max-width: 767.98px) {
+  /* Styles for <768px */
+}
+
+/* Below 576px */
+@media (max-width: 575.98px) {
+  /* Styles for <576px */
+}
+
+/* Ultra small devices (below 475px) */
+@media (max-width: 474.98px) {
+  /* Styles for <475px */
+}
+
+/* ==========================================================================
+   Example: "Between" Ranges (for precise targeting)
+   ========================================================================== */
+
+/* Only tablets (768px - 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+  /* Styles for tablets only */
+}
+
+/* Only small desktops (992px - 1199.98px) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  /* Styles for small desktops only */
+}

@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Build folder (contains packaged zip files)
+build/
+
+# Note: compiled/min/ files should be committed (they're needed on server)
+# But you can add them to .gitignore if you prefer to build on server
+
+# Build artifacts
+*.temp.css
+*.css.map
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+.cache/
+
