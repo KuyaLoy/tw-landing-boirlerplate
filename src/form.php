@@ -231,7 +231,7 @@ HTML;
   if (!empty($bcc_email)) $headers .= "Bcc: {$bcc_email}\r\n";
 
   if (mail($to, $subject, $html, $headers)) {
-    header('Location: ' . $basePath . 'thankyou.php');
+    header('Location: ' . $basePath . 'thankyou');
     exit;
   } else {
     throw new Exception('Failed to send. Please try again later.');

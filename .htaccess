@@ -14,6 +14,19 @@ RewriteCond %{HTTP_HOST} !\.test$ [NC]
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # ----------------------------------------------
+# Clean URLs — strip .php extension
+# ----------------------------------------------
+# Redirect /file.php to /file (external 301 so browsers see clean URL)
+RewriteCond %{THE_REQUEST} \s/(.+)\.php[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+# Internally rewrite /file to /file.php (so Apache serves the real file)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.+)$ $1.php [L]
+
+# ----------------------------------------------
 # GZIP Compression
 # ----------------------------------------------
 <IfModule mod_deflate.c>
