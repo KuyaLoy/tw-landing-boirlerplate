@@ -4,7 +4,6 @@
 <head>
   <!-- Basic Meta Tags -->
   <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="<?= $site_url ?>">
@@ -48,9 +47,9 @@
     <?php
     // Auto-refresh inline CSS when files change (cache busting via file modification time)
     // Always use minified files for optimal performance
-    $resetFile    = $projectDir . '/assets/css/compiled/min/reset.min.css';
-    $fontsFile    = $projectDir . '/assets/css/compiled/min/fonts.min.css';
-    $criticalFile = $projectDir . '/assets/css/compiled/min/critical.min.css';
+    $resetFile    = $projectDir . '/assets/css/min/reset.min.css';
+    $fontsFile    = $projectDir . '/assets/css/min/fonts.min.css';
+    $criticalFile = $projectDir . '/assets/css/min/critical.min.css';
 
     if (file_exists($resetFile)) include($resetFile);
     if (file_exists($fontsFile)) include($fontsFile);
@@ -59,24 +58,24 @@
   </style>
 
   <!-- Non-Critical CSS (loaded asynchronously) -->
-  <link rel="preload" href="<?= $basePath ?>assets/css/compiled/min/style.min.css?v=<?= $jscssverion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <link rel="preload" href="<?= $basePath ?>assets/css/compiled/min/responsive.min.css?v=<?= $jscssverion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="<?= $basePath ?>assets/css/min/style.min.css?v=<?= $jscssversion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="<?= $basePath ?>assets/css/min/responsive.min.css?v=<?= $jscssversion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="<?= $basePath ?>assets/css/vendor/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="preload" href="<?= $basePath ?>assets/css/vendor/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <!-- Edit CSS loads LAST to override all compiled styles (for live edits without recompiling) -->
   <?php $editCssFile = $projectDir . '/assets/css/edit.css'; ?>
   <?php if (file_exists($editCssFile) && filesize($editCssFile) > 100): ?>
-    <link rel="preload" href="<?= $basePath ?>assets/css/edit.css?v=<?= $jscssverion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="<?= $basePath ?>assets/css/edit.css?v=<?= $jscssversion; ?>" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <?php endif; ?>
 
   <!-- Fallback for No JavaScript -->
   <noscript>
-    <link rel="stylesheet" href="<?= $basePath ?>assets/css/compiled/min/style.min.css?v=<?= $jscssverion; ?>">
-    <link rel="stylesheet" href="<?= $basePath ?>assets/css/compiled/min/responsive.min.css?v=<?= $jscssverion; ?>">
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/min/style.min.css?v=<?= $jscssversion; ?>">
+    <link rel="stylesheet" href="<?= $basePath ?>assets/css/min/responsive.min.css?v=<?= $jscssversion; ?>">
     <link rel="stylesheet" href="<?= $basePath ?>assets/css/vendor/swiper-bundle.min.css">
     <link rel="stylesheet" href="<?= $basePath ?>assets/css/vendor/aos.css">
     <?php if (file_exists($editCssFile) && filesize($editCssFile) > 100): ?>
-      <link rel="stylesheet" href="<?= $basePath ?>assets/css/edit.css?v=<?= $jscssverion; ?>">
+      <link rel="stylesheet" href="<?= $basePath ?>assets/css/edit.css?v=<?= $jscssversion; ?>">
     <?php endif; ?>
   </noscript>
 

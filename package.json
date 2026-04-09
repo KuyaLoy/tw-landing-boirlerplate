@@ -1,10 +1,12 @@
 {
   "name": "boilerplate-final-tw",
-  "version": "1.0.0",
-  "description": "Boilerplate with Tailwind CSS and PostCSS",
+  "version": "2.0.0",
+  "description": "Boilerplate with Tailwind CSS 4 and PostCSS",
   "scripts": {
-    "dev": "node --no-deprecation build.js --watch --dev",
-    "build": "node --no-deprecation build.js --prod --package"
+    "dev": "node build.js --watch --dev",
+    "watch": "node build.js --watch --dev --no-sync",
+    "build": "node build.js --prod",
+    "package": "node build.js --prod --package"
   },
   "keywords": [
     "tailwindcss",
@@ -15,18 +17,17 @@
   "author": "",
   "license": "ISC",
   "engines": {
-    "node": ">=14.0.0",
+    "node": ">=18.0.0",
     "npm": ">=6.0.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
     "archiver": "^7.0.1",
-    "autoprefixer": "^10.4.20",
     "browser-sync": "^3.0.4",
     "chokidar": "^3.6.0",
     "cssnano": "^7.0.6",
     "esbuild": "^0.27.2",
     "postcss": "^8.4.47",
-    "postcss-nested": "^6.2.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^4.0.0"
   }
 }

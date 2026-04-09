@@ -34,7 +34,7 @@ include(__DIR__ . '/src/header.php');
 
     .thankyou-message .content {
         background: #fff;
-        border-top: 6px solid var(--color-accent);
+        border-top: 6px solid var(--brand-accent);
         padding: 40px 30px;
         border-radius: 20px;
         text-align: center;
@@ -46,7 +46,7 @@ include(__DIR__ . '/src/header.php');
 
     .thankyou-message .popup-check {
         font-size: 3rem;
-        color: var(--color-accent);
+        color: var(--brand-accent);
         margin-bottom: 10px;
     }
 
@@ -113,7 +113,7 @@ include(__DIR__ . '/src/header.php');
 
     closeBtn.addEventListener('click', () => {
         popup.classList.remove('show');
-        body.style.overflow = ''; // restore scroll
+        body.style.overflow = '';
     });
 </script>
 

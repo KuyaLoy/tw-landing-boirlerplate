@@ -1,3 +1,6 @@
+@reference "tailwindcss";
+@reference "./style.css";
+
 /* === ADDITIONS TO TAILWIND PREFLIGHT === */
 /* Tailwind's Preflight handles: box-sizing, margins, img/video block, font inheritance, antialiasing */
 /* These are extra resets beyond Preflight */

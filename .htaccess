@@ -44,6 +44,7 @@ RewriteRule ^(.+)$ $1.php [L]
   AddOutputFilterByType DEFLATE font/woff
   AddOutputFilterByType DEFLATE font/woff2
   AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE image/avif
 </IfModule>
 
 # ----------------------------------------------
@@ -56,6 +57,7 @@ RewriteRule ^(.+)$ $1.php [L]
   ExpiresByType image/gif "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/avif "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType font/woff "access plus 1 year"
@@ -69,7 +71,7 @@ RewriteRule ^(.+)$ $1.php [L]
 # ----------------------------------------------
 <IfModule mod_headers.c>
   # 1 year for heavy static assets
-  <FilesMatch "\.(ico|jpg|jpeg|png|gif|webp|svg|woff|woff2|eot|ttf)$">
+  <FilesMatch "\.(ico|jpg|jpeg|png|gif|webp|avif|svg|woff|woff2)$">
     Header set Cache-Control "max-age=31536000, public"
   </FilesMatch>
 
@@ -91,8 +93,13 @@ RewriteRule ^(.+)$ $1.php [L]
 # ----------------------------------------------
 # Block access to sensitive files
 # ----------------------------------------------
-<FilesMatch "^.*(\.env|\.git|composer\.json|package\.json|README\.md|readme\.txt)$">
+<FilesMatch "^.*(\.env|\.git|composer\.json|package\.json|package-lock\.json|README\.md|readme\.txt|CLAUDE\.md|build\.js)$">
   Order allow,deny
   Deny from all
 </FilesMatch>
+
+# Block access to data directory (PHP includes only, not web-accessible)
+<IfModule mod_rewrite.c>
+  RewriteRule ^data/ - [F,L]
+</IfModule>
 

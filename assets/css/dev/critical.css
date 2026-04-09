@@ -2,15 +2,19 @@
 /* Critical above-the-fold styles */
 /* This file compiles with Tailwind support (for @apply directives) */
 
+@reference "tailwindcss";
+@reference "./style.css";
+
 /* ========== DEFAULT STYLES (Used Everywhere) ========== */
 
 /* CSS Variables */
 :root {
   /* Brand Colors - Configure these to match your design */
-  --color-primary: #3b82f6; /* Primary brand color */
-  --color-secondary: #8b5cf6; /* Secondary brand color */
-  --color-text: #1a1a1a; /* Main text color */
-  --color-accent: #f59e0b; /* Accent/highlight color */
+  /* These are mapped to Tailwind utilities (bg-primary, text-secondary, etc.) via @theme in style.css */
+  --brand-primary: #3b82f6; /* Primary brand color */
+  --brand-secondary: #8b5cf6; /* Secondary brand color */
+  --brand-text: #1a1a1a; /* Main text color */
+  --brand-accent: #f59e0b; /* Accent/highlight color */
 
   /* Container Settings - Matches Tailwind breakpoints */
   --container-padding: clamp(1rem, 4vw, 2rem);
@@ -24,9 +28,16 @@
 
 /* Base Styles */
 body {
-  font-family: "Articulat", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  color: var(--color-text);
+  font-family:
+    "Articulat",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  color: var(--brand-text);
   background: #ffffff;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;

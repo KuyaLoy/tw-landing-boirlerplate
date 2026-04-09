@@ -1,14 +1,19 @@
 <?php
 require_once __DIR__ . '/../includes/config.php';
 
-function curl_get_file_contents(string $URL)
+function verify_recaptcha(string $secret, string $response)
 {
-  $c = curl_init();
-  curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
-  curl_setopt($c, CURLOPT_URL, $URL);
-  $contents = curl_exec($c);
+  $c = curl_init('https://www.google.com/recaptcha/api/siteverify');
+  curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($c, CURLOPT_POST, true);
+  curl_setopt($c, CURLOPT_POSTFIELDS, http_build_query([
+    'secret'   => $secret,
+    'response' => $response,
+  ]));
+  curl_setopt($c, CURLOPT_TIMEOUT, 10);
+  $result = curl_exec($c);
   curl_close($c);
-  return $contents ?: false;
+  return $result ?: false;
 }
 
 // Only allow POST
@@ -27,15 +32,8 @@ try {
     throw new Exception('No reCAPTCHA token');
   }
 
-  // verify reCAPTCHA
-  $recaptcha_url    = 'https://www.google.com/recaptcha/api/siteverify';
-  $recaptcha_secret = $recaptcha_server_secret;
-  $recaptcha_resp   = $_POST['token'];
-  $verify = curl_get_file_contents(
-    $recaptcha_url
-      . '?secret=' . urlencode($recaptcha_secret)
-      . '&response=' . urlencode($recaptcha_resp)
-  );
+  // verify reCAPTCHA (POST — keeps secret out of server logs)
+  $verify = verify_recaptcha($recaptcha_server_secret, $_POST['token']);
   $recap = json_decode($verify);
   if (!$recap || empty($recap->success) || $recap->success !== true) {
     throw new Exception('reCAPTCHA verification failed.');

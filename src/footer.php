@@ -87,14 +87,14 @@
   <link rel="preconnect" href="//www.google.com" crossorigin>
 
   <!-- JS Scripts - Load in order of priority -->
-  <script src="<?= $basePath ?>assets/js/vendor/swiper-bundle.min.js?v=<?= $jscssverion; ?>" defer></script>
-  <script src="<?= $basePath ?>assets/js/vendor/aos.js?v=<?= $jscssverion; ?>" defer></script>
-  <script src="<?= $basePath ?>assets/js/compiled/min/script.min.js?v=<?= $jscssverion; ?>" defer></script>
+  <script src="<?= $basePath ?>assets/js/vendor/swiper-bundle.min.js?v=<?= $jscssversion; ?>" defer></script>
+  <script src="<?= $basePath ?>assets/js/vendor/aos.js?v=<?= $jscssversion; ?>" defer></script>
+  <script src="<?= $basePath ?>assets/js/min/script.min.js?v=<?= $jscssversion; ?>" defer></script>
 
   <!-- Edit JS loads LAST to override all compiled scripts (for live edits without recompiling) -->
   <?php $editJsFile = $projectDir . '/assets/js/edit.js'; ?>
   <?php if (file_exists($editJsFile) && filesize($editJsFile) > 0): ?>
-      <script src="<?= $basePath ?>assets/js/edit.js?v=<?= $jscssverion; ?>" defer></script>
+      <script src="<?= $basePath ?>assets/js/edit.js?v=<?= $jscssversion; ?>" defer></script>
   <?php endif; ?>
 
   </body>

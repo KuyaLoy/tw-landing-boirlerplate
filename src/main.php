@@ -1,6 +1,6 @@
 <!-- ========== BOILERPLATE SAMPLE - Remove when starting your project ========== -->
 
-<header class="bg-white shadow-sm sticky top-0 z-50">
+<header class="bg-white shadow-xs sticky top-0 z-50">
     <div class="container flex items-center justify-between py-4">
         <a href="<?= $basePath ?>" class="text-xl font-bold text-primary">Logo</a>
         <nav class="hidden md:flex items-center gap-8">
@@ -41,7 +41,7 @@
         <div class="container">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Features</h2>
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 bg-white rounded-xl shadow-xs border border-gray-100">
                     <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -50,7 +50,7 @@
                     <h3 class="text-xl font-semibold mb-2">Fast Performance</h3>
                     <p class="text-gray-600">Optimized for speed with minimal CSS and efficient loading.</p>
                 </div>
-                <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 bg-white rounded-xl shadow-xs border border-gray-100">
                     <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -59,7 +59,7 @@
                     <h3 class="text-xl font-semibold mb-2">Fully Responsive</h3>
                     <p class="text-gray-600">Looks great on all devices from mobile to desktop.</p>
                 </div>
-                <div class="p-6 bg-white rounded-xl shadow-sm border border-gray-100">
+                <div class="p-6 bg-white rounded-xl shadow-xs border border-gray-100">
                     <div class="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
                         <svg class="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />

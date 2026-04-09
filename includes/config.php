@@ -24,11 +24,11 @@ if ($isDevelopment || $debugMode) {
 $projectDir = realpath(__DIR__ . '/..');
 
 // Cache busting version - uses latest modification time from CSS or JS
-$mainCssFile = $projectDir . '/assets/css/compiled/min/style.min.css';
-$mainJsFile  = $projectDir . '/assets/js/compiled/min/script.min.js';
+$mainCssFile = $projectDir . '/assets/css/min/style.min.css';
+$mainJsFile  = $projectDir . '/assets/js/min/script.min.js';
 $cssTime = file_exists($mainCssFile) ? filemtime($mainCssFile) : 0;
 $jsTime = file_exists($mainJsFile) ? filemtime($mainJsFile) : 0;
-$jscssverion = max($cssTime, $jsTime) ?: time();
+$jscssversion = max($cssTime, $jsTime) ?: time();
 
 // Site-wide config
 $site = "";

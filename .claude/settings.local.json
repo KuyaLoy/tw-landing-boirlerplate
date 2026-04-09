@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls d:/laragon/www/boilerplate-tw-v5/assets/fonts/ArticulatCF/*.eot)"
+    ]
+  }
+}

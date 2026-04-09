@@ -10,6 +10,7 @@ build/
 # Build artifacts
 *.temp.css
 *.css.map
+*.js.map
 
 # OS files
 .DS_Store

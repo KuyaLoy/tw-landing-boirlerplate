@@ -1,6 +1,8 @@
 # Tailwind CSS Landing Page Boilerplate
 
-A ready-to-use landing page starter with Tailwind CSS, PHP, and a built-in contact form with email.
+A ready-to-use landing page starter with Tailwind CSS 4, PHP, and a built-in contact form with email.
+
+**Requires:** Node.js >= 18, PHP 7.4+, Apache with mod_rewrite
 
 ---
 
@@ -19,18 +21,20 @@ npm install
 ### Start Working
 
 ```bash
-npm run dev
+npm run dev              # Watch + BrowserSync auto-reload (localhost:3000)
+npm run watch            # Watch only, no BrowserSync (for existing server)
 ```
 
-This opens your browser at `http://localhost:3000` with **live reload** — every time you save a file, the browser refreshes automatically.
+`npm run dev` opens your browser at `http://localhost:3000` with **live reload** — every time you save a file, the browser refreshes automatically.
 
 ### Build for Upload
 
 ```bash
-npm run build
+npm run build            # Compile only (no ZIP)
+npm run package          # Compile + create ZIP in build/
 ```
 
-Creates a ready-to-upload ZIP in the `build/` folder. No Node.js needed on the server.
+The ZIP in `build/` is ready to upload. No Node.js needed on the server.
 
 ---
 
@@ -80,12 +84,14 @@ Change the brand colors at the top:
 
 ```css
 :root {
-  --color-primary: #3b82f6;    ← main brand color
-  --color-secondary: #8b5cf6;  ← second color
-  --color-accent: #f59e0b;     ← highlight color
-  --color-text: #1a1a1a;       ← text color
+  --brand-primary: #3b82f6;    ← main brand color
+  --brand-secondary: #8b5cf6;  ← second color
+  --brand-accent: #f59e0b;     ← highlight color
+  --brand-text: #1a1a1a;       ← text color
 }
 ```
+
+These are mapped to Tailwind utilities (`bg-primary`, `text-secondary`, etc.) via `@theme inline` in `style.css`.
 
 ### 4. Images — `assets/images/`
 
@@ -126,35 +132,53 @@ project/
 │
 ├── assets/
 │   ├── images/              ← All images (auto-converts to WebP/AVIF)
-│   ├── fonts/               ← Custom font files
+│   ├── fonts/               ← Custom font files (woff2 + woff)
 │   ├── css/
 │   │   ├── dev/             ← Your CSS files (edit these)
-│   │   ├── compiled/min/    ← Auto-generated (don't edit)
+│   │   ├── min/             ← Auto-generated (don't edit)
 │   │   ├── edit.css         ← Quick live fixes (no compile needed)
 │   │   └── vendor/          ← Third-party CSS (AOS, Swiper)
 │   └── js/
 │       ├── dev/             ← Your JS files (edit these)
-│       ├── compiled/min/    ← Auto-generated (don't edit)
+│       ├── min/             ← Auto-generated (don't edit)
 │       ├── edit.js          ← Quick live fixes (no compile needed)
 │       └── vendor/          ← Third-party JS (AOS, Swiper)
 │
-├── tailwind.config.js       ← Tailwind settings
+├── CLAUDE.md                ← AI assistant rules for this project
 └── build.js                 ← Build system (don't touch)
 ```
+
+**Note:** Tailwind CSS 4 uses CSS-first configuration. Theme settings live in `assets/css/dev/style.css` (`@theme inline` block), not in a separate config file.
+
+**AI Rules:** `CLAUDE.md` contains rules for AI assistants (Claude, Cursor, Copilot, etc.) to follow when editing this project — path conventions, CSS placement rules, security guidelines, and more.
 
 ---
 
 ## CSS Files Explained
 
-| File | What it's for | Needs `npm run dev`? |
-|---|---|---|
-| `css/dev/critical.css` | Colors, containers, above-fold styles | Yes |
-| `css/dev/style.css` | Main styles (imports everything) | Yes |
-| `css/dev/custom.css` | Your custom CSS | Yes |
-| `css/dev/responsive.css` | Mobile/tablet adjustments | Yes |
-| `css/dev/reset.css` | Browser reset (rarely touch) | Yes |
-| `css/dev/fonts.css` | @font-face declarations | Yes |
-| **`css/edit.css`** | **Quick fixes on live site** | **No** |
+| File | What it's for | `@apply` works? | Needs `npm run dev`? |
+|---|---|---|---|
+| `css/dev/critical.css` | Colors, containers, above-fold styles (header + first 2 sections) | Yes | Yes |
+| `css/dev/style.css` | Tailwind entry point + theme config (don't add custom styles here) | Yes | Yes |
+| `css/dev/custom.css` | Your custom CSS (section 3 onward) | Yes | Yes |
+| `css/dev/responsive.css` | Media query overrides (when Tailwind utilities aren't enough) | Yes | Yes |
+| `css/dev/reset.css` | Browser reset (rarely touch) | Yes | Yes |
+| `css/dev/fonts.css` | @font-face declarations only | No | Yes |
+| **`css/edit.css`** | **Quick fixes on live site** | **No** | **No** |
+
+### Using `@apply` in CSS
+
+All CSS files (except `fonts.css` and `edit.css`) support Tailwind's `@apply` directive. Use TW4 syntax for `!important`:
+
+```css
+/* Correct TW4 syntax */
+body { @apply bg-black!; }
+
+/* Also works with custom theme colors */
+.header { @apply bg-primary text-white; }
+```
+
+This works because each file has `@reference "tailwindcss"` and `@reference "./style.css"` at the top — these give `@apply` access to all utilities without injecting Tailwind's full output.
 
 ### Quick Fix on a Live Site
 
@@ -211,10 +235,11 @@ Wrap content in a container to center it with max-width:
 ## Contact Form Setup
 
 The form handler is in `src/form.php`. It includes:
-- reCAPTCHA v3 spam protection
+- reCAPTCHA v3 spam protection (verified via POST for security)
 - Honeypot field for bots
+- Input sanitization and validation
 - HTML email template with your logo
-- Auto-redirect to `thankyou.php` after success
+- Auto-redirect to `thankyou.php` after success (for conversion tracking scripts)
 
 To wire up your form, point it to `src/form.php`:
 
@@ -272,5 +297,5 @@ LOCAL_URL=http://mysite.test npm run dev
 | Fix something on live | Edit `assets/css/edit.css` and upload |
 | Change email template | Edit `src/form.php` |
 | Change thank you page | Edit `thankyou.php` |
-| Upload to server | `npm run build`, upload ZIP contents |
+| Upload to server | `npm run package`, upload ZIP contents |
 | See errors on live | Add `?debug=1` to URL |
