@@ -1,0 +1,29 @@
+/* ========== TAILWIND CSS 4 ========== */
+/* We import only the LAYERS we want — skipping `base` (Preflight).
+   Our own reset.css handles the CSS reset, so we don't need Tailwind's.
+   This keeps our markup free of Tailwind's prebuilt baseline styles
+   (you control everything in reset.css). */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* ========== SOURCE SCANNING ========== */
+/* Scans project root for PHP/JS files (replaces content array from tailwind.config.js) */
+@source "../../..";
+
+/* ========== THEME CONFIGURATION ========== */
+/* CSS-first config — replaces tailwind.config.js */
+/* Colors reference --brand-* variables defined in critical.css :root */
+/* @theme inline prevents TW4 from generating its own --color-* CSS vars */
+@theme inline {
+  --color-primary: var(--brand-primary);
+  --color-secondary: var(--brand-secondary);
+  --color-text: var(--brand-text);
+  --color-accent: var(--brand-accent);
+  /* Generates Tailwind's `font-brand` utility, kept in sync with --brand-font in critical.css */
+  --font-brand: var(--brand-font);
+}
+
+/* ========== IMPORTS ========== */
+/* Note: fonts.css is inlined in HTML header for critical rendering, not imported here */
+@import "./custom.css";

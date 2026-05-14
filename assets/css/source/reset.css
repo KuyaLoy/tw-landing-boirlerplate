@@ -1,0 +1,155 @@
+@reference "tailwindcss";
+@reference "./style.css";
+
+/* ============================================================
+   reset.css — full CSS reset (NO Tailwind Preflight)
+   ============================================================
+   Tailwind's Preflight is INTENTIONALLY DISABLED in style.css
+   so this file is the SINGLE source of reset truth. Edit here
+   when you need to change baseline element behavior.
+
+   This reset is loosely based on Andy Bell's modern reset and
+   Tailwind v4's Preflight, but stays minimal — only what a
+   landing page actually needs.
+
+   IMPORTANT — wrapped in @layer base:
+   This file is inlined into <head> BEFORE style.min.css loads.
+   If left unlayered, blanket rules like `* { margin: 0 }` and
+   `h1..h6 { font-size: inherit }` would beat ANY layered Tailwind
+   utility (mt-6, text-4xl, bg-white, etc.) — unlayered styles
+   always win over layered ones, regardless of specificity.
+   The pre-declaration on the next line locks in the same layer
+   order style.css uses, so utilities reliably override reset.
+   ============================================================ */
+@layer theme, base, components, utilities;
+
+@layer base {
+
+/* ----- 1. Box-sizing on everything ----- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ----- 2. Remove default margin / padding ----- */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* ----- 3. Default border styling (matches Tailwind utilities) ----- */
+*,
+::before,
+::after {
+  border: 0 solid;
+}
+
+/* ----- 4. Smooth scrolling — opt-out for reduced motion users ----- */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----- 5. Body sane defaults ----- */
+html,
+body {
+  height: 100%;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* ----- 6. Media elements: block-level, scale within container ----- */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ----- 7. Form elements inherit fonts (Tailwind Preflight does this too) ----- */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+}
+
+button,
+[role="button"],
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  cursor: pointer;
+}
+
+/* ----- 8. Placeholder styling ----- */
+::placeholder {
+  color: inherit;
+  opacity: 0.6;
+}
+
+/* ----- 9. Anchors keep text-color, no underline by default ----- */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ----- 10. Headings inherit font (no browser default sizes) ----- */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* ----- 11. Lists — strip default markers (use Tailwind list-disc / list-decimal as needed) ----- */
+ul, ol {
+  list-style: none;
+}
+
+/* ----- 12. Tables — collapse borders ----- */
+table {
+  border-collapse: collapse;
+  border-color: inherit;
+  text-indent: 0;
+}
+
+/* ----- 13. Remove the autofill yellow on inputs (optional but common) ----- */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
+/* ----- 14. Focus visible — show outline only on keyboard focus ----- */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+} /* end @layer base */

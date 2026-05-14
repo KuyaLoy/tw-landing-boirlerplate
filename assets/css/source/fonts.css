@@ -1,0 +1,115 @@
+/* ============================================================
+ *  fonts.css — custom web font declarations
+ * ============================================================
+ *
+ *  Inlined into <head> via partials/header.php so the browser
+ *  knows about your fonts BEFORE any other CSS loads.
+ *
+ *  -----------------------------------------------------------
+ *  CURRENT FONT: Manrope (latin subset, woff2-only)
+ *  -----------------------------------------------------------
+ *  Manrope is a free, open-source modern sans-serif licensed
+ *  under SIL Open Font License — safe for commercial use.
+ *  Source: https://github.com/sharanda/manrope
+ *  Files mirrored from: https://fontsource.org/fonts/manrope
+ *
+ *  Weights shipped: 400 / 500 / 600 / 700 / 800.
+ *  Manrope ships NO italics — italic body copy will use the
+ *  system fallback's italic glyphs (acceptable for landing pages).
+ *
+ *  -----------------------------------------------------------
+ *  How fonts are wired up
+ *  -----------------------------------------------------------
+ *  1. Each weight needs its own @font-face block.
+ *  2. The font-family name ("Manrope") is the handle the rest
+ *     of the site refers to. Body uses it via --brand-font in
+ *     critical.css :root. Tailwind exposes it as `font-brand`
+ *     (mapped in style.css @theme inline).
+ *  3. To swap to a different font in 3 steps:
+ *       a. Drop .woff2 files into assets/fonts/<YourFont>/
+ *       b. Replace the @font-face blocks below to match.
+ *       c. Update --brand-font in critical.css so your new
+ *          font-family name comes first in the stack.
+ *
+ *  -----------------------------------------------------------
+ *  Why woff2-only (no .woff fallback)
+ *  -----------------------------------------------------------
+ *  woff2 has had universal browser support since ~2018. The
+ *  only browsers that need .woff are IE9–11, which are dead.
+ *  Shipping .woff alongside woff2 only adds bytes — modern
+ *  browsers always pick .woff2 first anyway.
+ *
+ *  -----------------------------------------------------------
+ *  Why font-display: swap
+ *  -----------------------------------------------------------
+ *  Renders text immediately in the system fallback while the
+ *  custom font downloads, then swaps once it's ready. Prevents
+ *  the "invisible text until font loads" (FOIT) problem and
+ *  protects LCP. Use `swap` unless you have a specific reason
+ *  to use `optional` (which avoids any swap on slow connections).
+ *
+ *  -----------------------------------------------------------
+ *  Preloading above-the-fold weights (optional, often worth it)
+ *  -----------------------------------------------------------
+ *  @font-face is lazy — the browser only fetches a font file
+ *  once a glyph in that weight is actually rendered. For fonts
+ *  used above the fold (hero headline, body copy), shave LCP
+ *  by adding a <link rel="preload"> in partials/header.php so
+ *  the file is requested in parallel with CSS:
+ *
+ *    <link rel="preload"
+ *          href="<?= $basePath ?>assets/fonts/Manrope/Manrope-400.woff2"
+ *          as="font"
+ *          type="font/woff2"
+ *          crossorigin>
+ *
+ *  Preload only what's actually visible on first paint —
+ *  preloading every weight is worse than preloading nothing.
+ *
+ * ============================================================ */
+
+
+/* Regular (400) — body copy */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("assets/fonts/Manrope/Manrope-400.woff2") format("woff2");
+}
+
+/* Medium (500) — buttons, labels, sub-headings */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("assets/fonts/Manrope/Manrope-500.woff2") format("woff2");
+}
+
+/* SemiBold (600) — emphasis, navigation */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("assets/fonts/Manrope/Manrope-600.woff2") format("woff2");
+}
+
+/* Bold (700) — headlines */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("assets/fonts/Manrope/Manrope-700.woff2") format("woff2");
+}
+
+/* ExtraBold (800) — hero display headlines */
+@font-face {
+  font-family: "Manrope";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("assets/fonts/Manrope/Manrope-800.woff2") format("woff2");
+}

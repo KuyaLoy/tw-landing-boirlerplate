@@ -1,0 +1,22 @@
+/**
+ * ========================================
+ *  live-edit.css — quick fixes without rebuild
+ * ========================================
+ *
+ * Loads LAST after every other stylesheet, so any rule here overrides
+ * everything in source/min/. NOT processed by the build system — drop
+ * vanilla CSS in below and refresh.
+ *
+ * Use cases:
+ *   - Fix something on a deployed site without running npm
+ *   - Quick overrides that don't yet justify editing source/
+ *   - One-off campaign tweaks
+ *
+ * Anything here that becomes permanent should eventually move into
+ * assets/css/source/custom.css and get re-compiled. The boilerplate
+ * skips loading this file entirely if it's empty / under 100 bytes.
+ *
+ * ========================================
+ */
+
+/* Add your custom CSS below this line */

@@ -1,0 +1,154 @@
+/* ========== CRITICAL CSS ========== */
+/* Critical above-the-fold styles */
+/* This file compiles with Tailwind support (for @apply directives) */
+
+@reference "tailwindcss";
+@reference "./style.css";
+
+/* ========== DEFAULT STYLES (Used Everywhere) ========== */
+
+/* CSS Variables */
+:root {
+  /* Brand Colors - Configure these to match your design */
+  /* These are mapped to Tailwind utilities (bg-primary, text-secondary, etc.) via @theme in style.css */
+  --brand-primary: #3b82f6; /* Primary brand color */
+  --brand-secondary: #8b5cf6; /* Secondary brand color */
+  --brand-text: #1a1a1a; /* Main text color */
+  --brand-accent: #f59e0b; /* Accent/highlight color */
+
+  /* Brand font stack — used by body and Tailwind's `font-brand` utility.
+     Put your custom font name first, then keep the system fallbacks so text
+     renders instantly while the webfont loads. To swap: replace "Manrope"
+     with your font's family name (must match the font-family in fonts.css). */
+  --brand-font:
+    "Manrope",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
+  /* Container Settings - Matches Tailwind breakpoints */
+  --container-padding: clamp(1rem, 4vw, 2rem);
+  --container-sm: 640px; /* Tailwind sm */
+  --container-md: 768px; /* Tailwind md */
+  --container-lg: 1024px; /* Tailwind lg */
+  --container-xl: 1280px; /* Tailwind xl */
+  --container-2xl: 1536px; /* Tailwind 2xl */
+  --container-max: 1920px; /* Full HD */
+}
+
+/* Base Styles */
+body {
+  font-family: var(--brand-font);
+  color: var(--brand-text);
+  background: #ffffff;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a {
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+/* ========== CONTAINER VARIANTS ========== */
+/*
+  Sizes match Tailwind breakpoints - adjust in :root variables
+
+  .container-sm   - 640px  (Tailwind sm)
+  .container-md   - 768px  (Tailwind md)
+  .container-lg   - 1024px (Tailwind lg)
+  .container      - 1280px (Tailwind xl) - DEFAULT
+  .container-2xl  - 1536px (Tailwind 2xl)
+  .container-max  - 1920px (Full HD)
+  .container-full - 100% with padding
+*/
+
+/* Base container styles */
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-2xl,
+.container-max,
+.container-full {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+/* Container sizes */
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}
+
+.container {
+  max-width: var(--container-xl); /* Default uses xl (1280px) */
+}
+
+.container-2xl {
+  max-width: var(--container-2xl);
+}
+
+.container-max {
+  max-width: var(--container-max);
+}
+
+.container-full {
+  max-width: 100%;
+}
+
+/* ========== CRITICAL ABOVE-THE-FOLD STYLES ========== */
+/* Add critical header/navigation/hero styles here */
+
+header {
+  /* Add critical header styles here */
+}
+
+/* ========================================================================
+   .bg-cover — img-as-background utility
+   ------------------------------------------------------------------------
+   Use this when a section needs a full-bleed background photo. We render
+   the background as an actual <img>/<picture>/<video> rather than CSS
+   `background-image: url()` so we still get:
+     • imgx() AVIF + WebP fallback chain
+     • lazy/eager loading control
+     • fetchpriority hints (LCP optimization)
+     • mobile/desktop variants via <picture> media queries
+     • width/height attributes (no CLS on load)
+   Parent must be `position: relative` (or otherwise positioned).
+
+   Usage:
+     <section class="relative py-20 md:py-32 overflow-hidden">
+       <div class="bg-cover">
+         <?php imgx('hero-bg', '', '', '', '', false, 768, ['fetchpriority' => 'high']); ?>
+       </div>
+       <div class="container relative z-10">
+         <h1 class="text-white text-5xl">Headline over background</h1>
+       </div>
+     </section>
+   ======================================================================== */
+.bg-cover {
+  @apply absolute top-0 left-0 right-0 bottom-0 w-full h-full z-0 overflow-hidden flex items-center justify-center;
+
+  & img,
+  & picture,
+  & video {
+    @apply absolute top-1/2 left-1/2 block w-full h-full max-w-none object-cover -translate-x-1/2 -translate-y-1/2;
+  }
+}

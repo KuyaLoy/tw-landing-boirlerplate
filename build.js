@@ -10,10 +10,12 @@ const net = require("net");
 const archiver = require("archiver");
 
 // ========== PATHS ==========
-// dev/ = editable source files, min/ = compiled minified output
-const srcDir = path.join(__dirname, "assets", "css", "dev");
+// source/ = editable source files (you edit these)
+// min/    = compiled minified output (committed to git, served to the browser
+//           in both local and production — works without running npm)
+const srcDir = path.join(__dirname, "assets", "css", "source");
 const cssMinDir = path.join(__dirname, "assets", "css", "min");
-const jsSrcDir = path.join(__dirname, "assets", "js", "dev");
+const jsSrcDir = path.join(__dirname, "assets", "js", "source");
 const jsMinDir = path.join(__dirname, "assets", "js", "min");
 
 // ========== CONFIG ==========
@@ -53,6 +55,14 @@ function isDevelopment() {
 }
 
 const isDev = isDevelopment();
+
+// Platform detection — controls watcher strategy.
+// Native FS events (fsevents on Mac, inotify on Linux) are fast and accurate,
+// no polling needed. Windows FS events are unreliable across SMB/network shares
+// and editors that swap-write — polling is the safe path there.
+const isWindows = process.platform === "win32";
+const watchUsePolling = isWindows;
+const watchInterval = isWindows ? 300 : 100;
 
 // ========== CSS COMPILATION ==========
 
@@ -277,19 +287,21 @@ if (watchMode) {
   const watchPaths = [
     path.join(srcDir, "**", "*.css"),
     path.join(jsSrcDir, "**", "*.js"),
-    path.join(__dirname, "src", "**", "*.php"),
+    path.join(__dirname, "partials", "**", "*.php"),
     path.join(__dirname, "index.php"),
     path.join(__dirname, "thankyou.php"),
-    path.join(__dirname, "includes", "**", "*.php"),
+    path.join(__dirname, "config", "**", "*.php"),
     path.join(__dirname, "data", "**", "*.php"),
   ];
 
   const watcher = chokidar.watch(watchPaths, {
     ignored: [
-      path.join(__dirname, "assets", "css", "edit.css"),
-      path.join(__dirname, "assets", "js", "edit.js"),
+      path.join(__dirname, "assets", "css", "live-edit.css"),
+      path.join(__dirname, "assets", "js", "live-edit.js"),
     ],
     ignoreInitial: true,
+    usePolling: watchUsePolling,  // true on Windows, false on Mac/Linux
+    interval: watchInterval,
   });
 
   // All CSS files that should trigger a main rebuild when changed
@@ -317,7 +329,7 @@ if (watchMode) {
       if (!importedFiles.includes(fileName) && fileName !== mainFile && allCssFiles.includes(fileName)) {
         await compileFile(mainFile, true);
       }
-    } else if (filePath.endsWith(".js") && filePath.includes(path.join("assets", "js", "dev"))) {
+    } else if (filePath.endsWith(".js") && filePath.includes(path.join("assets", "js", "source"))) {
       const fileName = path.basename(filePath);
       if (jsFiles.includes(fileName)) {
         await compileJS(fileName);
@@ -385,20 +397,29 @@ if (watchMode) {
       }
 
       const projectName = path.basename(__dirname);
+      // Reserve the BrowserSync port up front so we can mention it in the
+      // helpful "subfolder URL" message below if needed.
+      const bsPort = await findAvailablePort(3000);
+
       let proxyUrl;
+      let usingCleanVhost = false;
 
       if (process.env.LOCAL_URL) {
         proxyUrl = process.env.LOCAL_URL;
-        console.log(`  Using: ${proxyUrl}\n`);
+        console.log(`  Using LOCAL_URL: ${proxyUrl}\n`);
       } else {
+        // Detection priority — clean vhost URLs FIRST so we get tidy localhost:3000/
+        // instead of localhost:3000/<project-name>/
         const urlsToTest = [
-          `http://${projectName}.test`,
+          `http://${projectName}.test`,         // Laragon Pretty URL / mac valet (clean)
           `https://${projectName}.test`,
-          `http://localhost/${projectName}`,
+          `http://${projectName}.local`,         // mac valet alternative (clean)
+          `https://${projectName}.local`,
+          `http://localhost/${projectName}`,     // subfolder fallback (URL has /project/ prefix)
           `https://localhost/${projectName}`,
         ];
 
-        console.log("  Detecting local server...");
+        console.log("  Detecting local server (preferring clean vhost URLs)...");
         let foundUrl = null;
         for (const url of urlsToTest) {
           if (await isUrlReachable(url)) { foundUrl = url; break; }
@@ -406,16 +427,29 @@ if (watchMode) {
 
         if (foundUrl) {
           proxyUrl = foundUrl;
-          console.log(`  Found: ${proxyUrl}\n`);
+          usingCleanVhost = /\.(test|local)\b/.test(foundUrl);
+          console.log(`  Found: ${proxyUrl}`);
+          if (!usingCleanVhost) {
+            console.log("");
+            console.log(`  Heads up: detected a SUBFOLDER URL. Your browser bar will show`);
+            console.log(`  http://localhost:${bsPort}/${projectName}/ instead of just http://localhost:${bsPort}/`);
+            console.log(`  Fix (recommended): enable a clean local vhost.`);
+            console.log(`    • Laragon (Windows):  Menu → Preferences → check "Auto Virtual Hosts"`);
+            console.log(`                          (creates ${projectName}.test automatically)`);
+            console.log(`    • Mac (Laravel Valet): \`cd ${projectName} && valet link && valet secure\``);
+            console.log(`    • Mac (Laravel Herd):  Drag the project folder into Herd`);
+            console.log(`    • Manual: set LOCAL_URL=http://your-url before running npm run dev`);
+            console.log("");
+          } else {
+            console.log("");
+          }
         } else {
           console.log(`\n  No local server detected!`);
-          console.log(`  Start Laragon/XAMPP/WAMP, then run: npm run dev`);
+          console.log(`  Start Laragon/XAMPP/WAMP/Valet/Herd, then run: npm run dev`);
           console.log(`  Or set manually: LOCAL_URL=http://your-url npm run dev\n`);
           process.exit(1);
         }
       }
-
-      const bsPort = await findAvailablePort(3000);
 
       browserSync.init({
         proxy: { target: proxyUrl, ws: true },
@@ -425,22 +459,22 @@ if (watchMode) {
         files: [
           "assets/css/min/**/*.css",
           "assets/js/min/**/*.js",
-          "assets/css/edit.css",
-          "assets/js/edit.js",
+          "assets/css/live-edit.css",
+          "assets/js/live-edit.js",
           "*.php",
-          "src/**/*.php",
-          "includes/**/*.php",
+          "partials/**/*.php",
+          "config/**/*.php",
           "data/**/*.php",
         ],
         watchOptions: {
-          usePolling: true,
-          interval: 300,
+          usePolling: watchUsePolling,         // Polling on Windows only — fast native events on Mac/Linux
+          interval: watchInterval,
           awaitWriteFinish: { stabilityThreshold: 150, pollInterval: 100 },
         },
         notify: false,
         open: true,
         reloadOnRestart: true,
-        injectChanges: false,
+        injectChanges: true,                    // CSS hot-injection — keeps scroll/form state on CSS edits
         reloadDelay: 100,
         logLevel: "info",
         logConnections: false,
@@ -448,8 +482,9 @@ if (watchMode) {
       });
 
       console.log(`${"=".repeat(50)}`);
-      console.log(`  BrowserSync: http://localhost:${bsPort}/`);
-      console.log(`  Proxy: ${proxyUrl}`);
+      console.log(`  BrowserSync:  http://localhost:${bsPort}/`);
+      console.log(`  Proxy target: ${proxyUrl}`);
+      console.log(`  Watch mode:   ${watchUsePolling ? "polling (Windows)" : "native FS events (Mac/Linux)"}`);
       console.log(`${"=".repeat(50)}\n`);
     }
   });

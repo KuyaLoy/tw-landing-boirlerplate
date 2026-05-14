@@ -1,7 +1,13 @@
 <?php
-require_once(__DIR__ . '/includes/config.php');
-require_once(__DIR__ . '/includes/functions.php');
-include(__DIR__ . '/src/header.php');
+require_once(__DIR__ . '/config/config.php');
+require_once(__DIR__ . '/config/functions.php');
+
+// Tells partials/footer.php to skip the reCAPTCHA loader + 60s token-refresh
+// interval. The form is already submitted; loading grecaptcha here just wastes
+// bandwidth and runs a setInterval that never gets used.
+$isThankYou = true;
+
+include(__DIR__ . '/partials/header.php');
 ?>
 <style>
     .thankyou-message * {
@@ -123,6 +129,6 @@ include(__DIR__ . '/src/header.php');
 
 
 <?php
-include(__DIR__ . '/src/main.php');
-include(__DIR__ . '/src/footer.php');
+include(__DIR__ . '/partials/main.php');
+include(__DIR__ . '/partials/footer.php');
 ?>

@@ -93,13 +93,39 @@ RewriteRule ^(.+)$ $1.php [L]
 # ----------------------------------------------
 # Block access to sensitive files
 # ----------------------------------------------
-<FilesMatch "^.*(\.env|\.git|composer\.json|package\.json|package-lock\.json|README\.md|readme\.txt|CLAUDE\.md|build\.js)$">
+# Critical: .env contains secrets, .gitignore/.gitattributes/.htaccess can leak config
+<FilesMatch "^(\.env(\..+)?|\.gitignore|\.gitattributes|\.htaccess)$">
   Order allow,deny
   Deny from all
 </FilesMatch>
 
-# Block access to data directory (PHP includes only, not web-accessible)
+# Block any access to /.git/ and its contents (dot prefix matters)
+RewriteRule "(^|/)\.git" - [F,L]
+
+# Editor / OS swap files
+<FilesMatch "\.(bak|swp|swo|orig|tmp)$|~$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Note: composer.json, package.json, README.md, build.js are NOT blocked here
+# anymore. Blocking package.json broke Laragon's framework-detection probe
+# (Laragon HTTP-fetches /package.json — getting a 403 made it skip the hosts
+# entry for this folder, breaking the .test URL). Those files leak tech-stack
+# info but no secrets. If you want them blocked on production only, add:
+#   <If "%{HTTP_HOST} !~ /(\.test|\.local|^localhost)/i">
+#     <FilesMatch "(composer|package|package-lock)\.json$">
+#       Require all denied
+#     </FilesMatch>
+#   </If>
+
+# Block access to internal-only directories (PHP includes, not web-accessible)
+# /data    — shared content variables
+# /config  — config.php, env.php, functions.php
+# /lib     — bundled 3rd-party libraries (PHPMailer, etc.)
 <IfModule mod_rewrite.c>
-  RewriteRule ^data/ - [F,L]
+  RewriteRule ^data/   - [F,L]
+  RewriteRule ^config/ - [F,L]
+  RewriteRule ^lib/    - [F,L]
 </IfModule>
 
